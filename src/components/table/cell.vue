@@ -5,7 +5,12 @@
             <Checkbox :value="checked" @click.native.stop="handleClick" @on-change="toggleSelect" :disabled="disabled"></Checkbox>
         </template>
         <template v-if="renderType === 'html'"><span v-html="row[column.key]"></span></template>
-        <template v-if="renderType === 'normal'"><span>{{row[column.key]}}</span></template>
+        <template v-if="renderType === 'normal'">
+            <Tooltip v-if="column.ellipsis" placement="top" :content="row[column.key]">
+                <span>{{row[column.key]}}</span>
+            </Tooltip>
+            <span v-else>{{row[column.key]}}</span>
+        </template>
         <template v-if="renderType === 'expand' && !row._disableExpand">
             <div :class="expandCls" @click="toggleExpand">
                 <Icon type="ios-arrow-right"></Icon>
@@ -23,6 +28,7 @@
     import Cell from './expand';
     import Icon from '../icon/icon.vue';
     import Checkbox from '../checkbox/checkbox.vue';
+    import Tooltip from '../tooltip/tooltip.vue';
 
     export default {
         name: 'TableCell',
